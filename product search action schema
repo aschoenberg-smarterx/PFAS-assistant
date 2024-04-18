@@ -1,0 +1,52 @@
+Auth: None
+
+openapi: 3.0.0
+info:
+  title: Product Ingredients API
+  description: API for retrieving product ingredients based on product name, brand name, and UPC.
+  version: 1.0.0
+servers:
+  - url: https://rslsmarterx.replit.app
+    description: Flask API Wrapper for Product Ingredients
+paths:
+  /classify/product_ingredients:
+    get:
+      operationId: getProductIngredients
+      summary: Retrieve ingredients list for a given product
+      description: Returns the ingredients list based on product name, brand name, and UPC.
+      parameters:
+        - name: product_name
+          in: query
+          description: Name of the product
+          required: true
+          schema:
+            type: string
+        - name: brand_name
+          in: query
+          description: Brand name of the product
+          required: true
+          schema:
+            type: string
+        - name: upc
+          in: query
+          description: UPC of the product (optional)
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with ingredients list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ingredients_list:
+                    type: string
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+
+
+Privacy policy: https://smarterx.webflow.io/our-ai-policy
