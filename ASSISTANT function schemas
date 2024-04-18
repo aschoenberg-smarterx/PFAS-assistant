@@ -1,0 +1,178 @@
+get_openapi_spec:
+
+{
+  "name": "get_openapi_spec",
+  "description": "Retrieve the OpenAPI Specification for the Smarter-1 Marketplace API",
+  "api_details": {
+    "method": "GET",
+    "url": "https://api.smarterx.com/smarter-1-marketplace/v2beta/docs",
+    "headers": {
+      "Authorization": "Bearer 123abc"
+    }
+  },
+  "parameters": {},
+  "response_mapping": {
+    "200": {
+      "description": "OpenAPI specification retrieved successfully"
+    }
+  }
+}
+
+***
+
+get_classification_rules:
+
+{
+  "name": "get_classification_rules",
+  "description": "Retrieve the current classification rules from the Smarter-1 Marketplace API",
+  "api_details": {
+    "method": "GET",
+    "url": "https://api.smarterx.com/smarter-1-marketplace/v2beta/products/classifications/rules",
+    "headers": {
+      "Authorization": "Bearer 123abc"
+    }
+  },
+  "parameters": {},
+  "response_mapping": {
+    "200": {
+      "description": "Classification rules retrieved successfully"
+    }
+  }
+}
+
+***
+
+init_product_classification_job:
+
+{
+  "name": "init_product_classification_job",
+  "description": "Initialize a product classification job with given products and rules",
+  "api_details": {
+    "method": "POST",
+    "url": "https://api.smarterx.com/smarter-1-marketplace/v2beta/products/classification_jobs",
+    "headers": {
+      "Authorization": "Bearer 123abc"
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "products": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "Name of the product"
+            },
+            "brand": {
+              "type": "string",
+              "description": "Brand of the product"
+            },
+            "any-key": {
+              "type": "string",
+              "description": "Additional product identifier"
+            }
+          },
+          "required": ["name", "brand"]
+        },
+        "description": "List of products to classify",
+        "minItems": 1,
+        "maxItems": 25
+      },
+      "rules_to_evaluate": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        },
+        "default": ["ALL"],
+        "description": "Rules to evaluate during classification"
+      }
+    },
+    "required": ["products"]
+  },
+  "response_mapping": {
+    "200": {
+      "description": "Product classification job initialized successfully"
+    }
+  }
+}
+
+***
+
+get_classification_job_status:
+
+{
+  "name": "get_classification_job_status",
+  "description": "Retrieve the status of an ongoing product classification job",
+  "api_details": {
+    "method": "GET",
+    "url": "https://api.smarterx.com/smarter-1-marketplace/v2beta/products/classification_jobs/{job_id}",
+    "headers": {
+      "Authorization": "Bearer 123abc"
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "job_id": {
+        "type": "string",
+        "description": "The unique identifier for the classification job"
+      }
+    },
+    "required": ["job_id"]
+  },
+  "response_mapping": {
+    "200": {
+      "description": "Status of the product classification job retrieved successfully"
+    }
+  }
+}
+
+***
+
+get_product_ingredients:
+
+{
+  "name": "get_product_ingredients",
+  "description": "Retrieve the ingredients list for a given product based on its name, brand, and optionally UPC.",
+  "api_details": {
+    "method": "GET",
+    "url": "https://rslsmarterx.replit.app/classify/product_ingredients",
+    "headers": {
+      "Authorization": "None"
+    }
+  },
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "product_name": {
+        "type": "string",
+        "description": "The name of the product for which ingredients are needed."
+      },
+      "brand_name": {
+        "type": "string",
+        "description": "The brand name of the product."
+      },
+      "upc": {
+        "type": "string",
+        "description": "The UPC of the product (optional).",
+        "required": false
+      }
+    },
+    "required": ["product_name", "brand_name"]
+  },
+  "response_mapping": {
+    "200": {
+      "description": "Successful response with ingredients list",
+      "path": "ingredients_list"
+    },
+    "400": {
+      "description": "Bad request - check parameter validity"
+    },
+    "500": {
+      "description": "Internal server error - check server logs"
+    }
+  }
+}
