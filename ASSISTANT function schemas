@@ -1,17 +1,8 @@
-
-init_product_classification_job:
+classify_product:
 
 {
-  "name": "init_product_classification_job",
-  "description": "Initiate a product classification job to determine tariff codes based on the product's attributes.",
-  "api_details": {
-    "method": "POST",
-    "url": "https://api.smarterx.com/smarter-1-marketplace/v3beta/products/classification_jobs",
-    "headers": {
-      "Authorization": "Bearer YOUR_API_KEY"
-    },
-    "content_type": "application/json"
-  },
+  "name": "classify_product",
+  "description": "Submits product attributes and decisions to evaluate to the API for classification and retrieves the classification result.",
   "parameters": {
     "type": "object",
     "properties": {
@@ -20,127 +11,35 @@ init_product_classification_job:
         "items": {
           "type": "object",
           "properties": {
-            "name": {
-              "type": "string",
-              "description": "Name of the product"
+            "flashpoint": {
+              "type": "string"
             },
             "brand": {
-              "type": "string",
-              "description": "Brand of the product"
+              "type": "string"
             },
-            "any_key": {
-              "type": "string",
-              "description": "Additional attributes of the product relevant to classification"
+            "ingredients_list": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
             }
-          },
-          "required": ["name", "brand"]
-        },
-        "description": "List of products to classify, each with specified attributes",
-        "maxItems": 25,
-        "minItems": 1
+          }
+        }
       },
-      "rules_to_evaluate": {
+      "decisions_to_evaluate": {
         "type": "array",
         "items": {
           "type": "string"
-        },
-        "description": "Specific rules or decisions to evaluate for classification",
-        "default": ["ALL"]
+        }
       }
     },
-    "required": ["products"]
+    "required": [
+      "products",
+      "decisions_to_evaluate"
+    ]
   },
-  "response_mapping": {
-    "201": {
-      "path": "job_id",
-      "description": "Product classification job initiated successfully, and job ID retrieved"
-    }
-  }
-}
-
-
-
-***
-
-
-
-list_classification_jobs:
-
-{
-  "name": "list_classification_jobs",
-  "description": "List all previously requested product classification jobs to review their status and retrieve job IDs.",
-  "api_details": {
-    "method": "GET",
-    "url": "https://api.smarterx.com/smarter-1-marketplace/v3beta/products/classification_jobs",
-    "headers": {
-      "Authorization": "Bearer YOUR_API_KEY"
-    }
-  },
-  "parameters": {
-    "type": "object",
-    "properties": {
-      "page_size": {
-        "type": "integer",
-        "description": "The size of each page of job results",
-        "default": 10
-      },
-      "page_token": {
-        "type": "string",
-        "description": "A page token, received from a previous call to this endpoint. Provide this to retrieve the subsequent page."
-      }
-    }
-  },
-  "response_mapping": {
-    "200": {
-      "description": "Successfully retrieved the list of classification jobs",
-      "path": "jobs"
-    }
-  }
-}
-
-
-
-***
-
-
-
-get_classification_job_status:
-
-{
-  "name": "get_classification_job_status",
-  "description": "Check the current status of a product classification job using the job ID.",
-  "api_details": {
-    "method": "GET",
-    "url_template": "https://api.smarterx.com/smarter-1-marketplace/v3beta/products/classification_jobs/{job_id}",
-    "headers": {
-      "Authorization": "Bearer YOUR_API_KEY"
-    }
-  },
-  "parameters": {
-    "type": "object",
-    "properties": {
-      "job_id": {
-        "type": "string",
-        "description": "The unique identifier for the classification job"
-      }
-    },
-    "required": ["job_id"]
-  },
-  "response_mapping": {
-    "200": {
-      "description": "Successfully retrieved the job status",
-      "path": "product_classification_jobs[0].decision_results[0].rule_results[0].result"
-    },
-    "401": {
-      "description": "Unauthorized request - Check the API key"
-    },
-    "404": {
-      "description": "Job ID not found - Check the job_id provided"
-    },
-    "500": {
-      "description": "Internal server error - The server encountered an unexpected condition"
-    }
-  }
+  "endpoint": "https://smarter-1.replit.app/classify_product",
+  "method": "POST"
 }
 
 
